@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gray.user.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.gray.user.entity.User">
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="age" property="age" />
+		<result column="name" property="name" />
+		<result column="role" property="role" />
+	</resultMap>
+  <sql id="Base_Column_List" >
+    username, password, age, name, role
+  </sql>
+  <select id="selectId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from user
+  </select>
+</mapper>
