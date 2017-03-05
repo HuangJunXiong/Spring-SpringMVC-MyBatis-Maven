@@ -1,4 +1,6 @@
-package com.gray.user.service;
+package com.gray.user.service.impl;
+
+import com.gray.user.service.cxfService;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;

@@ -10,6 +10,6 @@ xsi:schemaLocation="
 <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />  
 <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />   
 
-<bean id="cxfServiceImpl" class="com.gray.user.service.cxfServiceImpl"/>   
+<bean id="cxfServiceImpl" class="com.gray.user.service.impl.cxfServiceImpl"/>
 <jaxws:endpoint  id="cxfService"   implementor="#cxfServiceImpl" address="/cxfService" ></jaxws:endpoint>
 </beans>
