@@ -86,6 +86,7 @@ private String shiroLogin(User user) {
 	} catch (IncorrectCredentialsException ex) {
 		return "用户不存在或者密码错误！";
 	} catch (AuthenticationException ex) {
+		ex.printStackTrace();
 		return ex.getMessage(); // 自定义报错信息
 	} catch (Exception ex) {
 		ex.printStackTrace();

@@ -21,6 +21,7 @@
 	</tr>
 	<tr>
 		<td><input type="submit" name="login" value="登录" /></td>
+		<td><input type="button" name="register" value="注册" /></td>
 	</tr>
 </table>
 </form>
