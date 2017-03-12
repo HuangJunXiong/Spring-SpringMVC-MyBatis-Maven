@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title></title>
+<title>登录页</title>
+<script src="./js/jquery.js" type="text/javascript"></script>
 </head>
 <body>
-<form action="../test/dologin.do" method="post">
+<form action="../dologin.do" method="post">
 <table>
 	<tr>
 		<td><label>用户名</label></td>
@@ -21,9 +22,16 @@
 	</tr>
 	<tr>
 		<td><input type="submit" name="login" value="登录" /></td>
-		<td><input type="button" name="register" value="注册" /></td>
+		<td><input id="registerBtn" type="button" name="register" value="注册"/></td>
 	</tr>
 </table>
 </form>
+<script type="text/javascript">
+ $(function(){
+    $("#registerBtn").click(function(event){
+        window.location = "../jsp/register.jsp";
+    });
+  });
+</script>
 </body>
 </html>

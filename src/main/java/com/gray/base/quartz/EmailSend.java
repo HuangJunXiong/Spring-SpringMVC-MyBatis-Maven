@@ -7,7 +7,7 @@ public class EmailSend{
 
 	public void execute(){
 		// TODO 发送邮件的一些操作
-		System.out.println("定时任务执行中...当前时间为"+new Date(System.currentTimeMillis()));
+		System.out.println("Timed task execution...Current time is: "+new Date(System.currentTimeMillis()));
 	}
 
 }

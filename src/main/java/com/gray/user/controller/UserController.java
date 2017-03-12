@@ -1,10 +1,11 @@
 package com.gray.user.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.gray.annotation.Log;
+import com.gray.base.activeMQ.service.RemindService;
+import com.gray.common.ServiceParam;
+import com.gray.user.entity.User;
+import com.gray.user.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -14,21 +15,24 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gray.annotation.Log;
-import com.gray.interceptor.LogInterceptor;
-import com.gray.user.entity.User;
-import com.gray.user.service.impl.UserServiceImpl;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
-@RequestMapping("/test") 
-public class LoginController {
-	private final Logger logger = LoggerFactory.getLogger(LoginController.class);
+public class UserController {
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
+	@Autowired
+	@Qualifier("remindServiceImpl")
+	private RemindService remindService;
 
 @RequestMapping("/dologin.do") //url
 @Log(oper="user login")
@@ -36,16 +40,17 @@ public String dologin(User user, Model model){
 	logger.info("login ....");
 	String info = loginUser(user);
 	if (!"SUCC".equals(info)) {
-		model.addAttribute("failMsg", "用户不存在或密码错误！");
+		model.addAttribute("failMsg", "User does not exist or password error!");
 		return "/jsp/fail";
 	}else{
-		model.addAttribute("successMsg", "登陆成功！");//返回到页面说夹带的参数
+		model.addAttribute("successMsg", "login Succ!");//返回到页面说夹带的参数
 		model.addAttribute("name", user.getUsername());
 		return "/jsp/success";//返回的页面
 	}
   }
 
 @RequestMapping("/logout.do")
+@Log(oper="user logout")
 public void logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
     Subject subject = SecurityUtils.getSubject();
     if (subject != null) {
@@ -82,15 +87,15 @@ private String shiroLogin(User user) {
 	try {
 		SecurityUtils.getSubject().login(token);
 	} catch (UnknownAccountException ex) {
-		return "用户不存在或者密码错误！";
+		return "User does not exist or password error!";
 	} catch (IncorrectCredentialsException ex) {
-		return "用户不存在或者密码错误！";
+		return "User does not exist or password error!";
 	} catch (AuthenticationException ex) {
 		ex.printStackTrace();
 		return ex.getMessage(); // 自定义报错信息
 	} catch (Exception ex) {
 		ex.printStackTrace();
-		return "内部错误，请重试！";
+		return "Internal error, please try again!";
 	}
 	return "SUCC";
 }
@@ -103,4 +108,21 @@ private boolean isRelogin(User user) {
 		}
 		return false; // 需要重新登陆
 }
+	@RequestMapping("/register.do")
+	@Log(oper="user register")
+    @ResponseBody
+	public ServiceParam register(User user, Model model){
+		if(!StringUtils.isEmpty(user.getUsername())){
+		    user.setRole("user");
+            User userDb = userService.findByUserName(user.getUsername());
+            User userDB = userService.findByEmail(user.getEmail());
+            if (userDb != null)return new ServiceParam("user exist!");
+            if(userDB != null) return new ServiceParam("email exist!");
+            userService.insertUser(user);
+            // 使用消息队列通知发邮件
+			remindService.sendRegisterRemind(user);
+            return new ServiceParam(null,"register Succ!",true);
+        }
+        return new ServiceParam("paramErr!");
+	}
 }

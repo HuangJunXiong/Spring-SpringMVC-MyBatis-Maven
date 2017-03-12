@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+        xmlns:jms="http://www.springframework.org/schema/jms"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core.xsd">
+    <!--ActiveMQ自带的连接工厂-->
+    <bean id="connectionFactory"
+          class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://localhost:61616</value>
+        </property>
+    </bean>
+    <!--消息目的地-->
+    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>gray.queue</value>
+        </constructor-arg>
+    </bean>
+    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg>
+            <value>gray.topic</value>
+        </constructor-arg>
+    </bean>
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="connectionFactory" />
+    </bean>
+    <!--消息监听器-->
+    <bean id="messageHandler" class="com.gray.base.activeMQ.service.MessageHandler"/>
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="gray.queue" ref="messageHandler" method="handler"/>
+    </jms:listener-container>
+</beans>

@@ -5,7 +5,9 @@ import java.util.List;
 import com.gray.user.entity.User;
 
 public interface UserService {
-	User doUserLogin(User user);
+	public User doUserLogin(User user);
 	public User findByUserName(String username);
-	List<User> queryAll();
+	public List<User> queryAll();
+	public void insertUser(User user);
+	public User findByEmail(String email);
 }

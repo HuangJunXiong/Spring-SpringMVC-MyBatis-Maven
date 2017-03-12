@@ -1,7 +1,6 @@
 package com.gray.interceptor;
 
-import java.lang.reflect.Method;
-
+import com.gray.annotation.Log;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -11,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.gray.annotation.Log;
+import java.lang.reflect.Method;
 
 @Aspect
 @Component
@@ -25,7 +24,7 @@ public class LogInterceptor {
 //	public void after(){
 //		logger.info("login end!");
 //	}
-    @Pointcut("@annotation(com.gray.annotation.Log)")    
+    @Pointcut("@annotation(com.gray.annotation.Log)")
     public void controllerAspect() {
     	
     }

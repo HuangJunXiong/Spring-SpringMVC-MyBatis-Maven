@@ -7,9 +7,11 @@
 		<result column="age" property="age" />
 		<result column="name" property="name" />
 		<result column="role" property="role" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
 	</resultMap>
   <sql id="Base_Column_List" >
-    username, password, age, name, role
+    username, password, age, name, role, email, phone
   </sql>
   <select id="selectId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -22,4 +24,16 @@
   	<include refid="Base_Column_List" />
   	from user
   </select>
+    <update id="update" parameterType="java.lang.String">
+        ${value}
+    </update>
+    <insert id="insert" parameterType="java.lang.String" >
+        ${value}
+    </insert>
+    <select id="selectEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
 </mapper>
