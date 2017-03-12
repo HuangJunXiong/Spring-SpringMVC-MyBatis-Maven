@@ -5,5 +5,7 @@ JDK：1.7
 Spring版本：3.2.0.RELEASE      
 # 2017-03-09
 更新了所有依赖版本，添加activeMQ，整合cxf      
-Spring版本：4.3.3.RELEASE     
+Spring版本：4.3.3.RELEASE
+# 2017-03-12
+添加注册功能，实现注册后通过消息队列发送邮件
 
