@@ -1,3 +1,5 @@
+package com.gray;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -10,7 +12,7 @@ import junit.framework.TestCase;
 
 public class ClientTest extends TestCase {
 
-	@Test
+	//@Test
 	public void testMain(){
 		System.out.println(doPost("http://localhost:8090/test/dologin.do","username=admin&password=admin","UTF-8"));
 	}
