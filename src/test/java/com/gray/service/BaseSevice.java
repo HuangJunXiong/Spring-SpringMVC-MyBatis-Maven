@@ -1,0 +1,11 @@
+package com.gray.service;
+
+/**
+ * Created by gray on 2017/4/8.
+ */
+public interface BaseSevice {
+    public void insert(String sql,boolean flag) throws Exception;
+    public void update(String sql);
+    public void delete(String sql);
+    public Integer sum();
+}
