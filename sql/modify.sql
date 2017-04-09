@@ -12,3 +12,11 @@ CREATE TABLE `user` (
   `phone` varchar(20) DEFAULT '',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 事务管理测试表tbl_account
+--
+DROP TABLE IF EXISTS `tbl_account`;
+CREATE TABLE `tbl_account` (
+  `money` int(10) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

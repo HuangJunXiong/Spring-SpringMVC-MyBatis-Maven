@@ -3,6 +3,7 @@ package com.gray.user.service.impl;
 import com.gray.user.dao.BaseDao;
 import com.gray.user.service.BaseSevice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseSeviceImpl implements BaseSevice {
     @Autowired
+    @Qualifier("baseDao")
     private BaseDao<?> dao;
 
     @Override
