@@ -2,6 +2,7 @@ package com.gray.user.service.impl;
 
 import java.util.List;
 
+import com.gray.user.dao.BaseDao;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @EnableTransactionManagement
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseSeviceImpl implements UserService {
 	@Autowired
-	private UserDao<User> dao;
+	private UserDao<User> userdao;
 	
 	public User doUserLogin(User user) {
-		List<User> list = dao.selectId(user.getUsername());
+		List<User> list = userdao.selectId(user.getUsername());
 		if(list.size() == 0){
 			return null;
 		}else{
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public User findByUserName(String username) {
-		List<User> list = dao.selectId(username);
+		List<User> list = userdao.selectId(username);
 		if (!CollectionUtils.isEmpty(list)){
 			return list.get(0);
 		} else {
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public List<User> queryAll() {
-		return dao.queryAll();
+		return userdao.queryAll();
 	}
 
 	@Override
@@ -50,12 +51,12 @@ public class UserServiceImpl implements UserService {
 		String insertSql = "INSERT INTO user(username, password, age, name, role, email, phone) "+
 				"VALUE('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getAge()+
 				"','"+user.getName()+"','"+user.getRole()+"','"+user.getEmail()+"','"+user.getPhone()+"');";
-		dao.insert(insertSql);
+		super.insert(insertSql);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		List<User> list = dao.selectEmail(email);
+		List<User> list = userdao.selectEmail(email);
 		if (!CollectionUtils.isEmpty(list)){
 			return list.get(0);
 		} else {

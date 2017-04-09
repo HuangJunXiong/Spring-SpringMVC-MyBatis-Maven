@@ -45,19 +45,29 @@
 		<property name="basePackage"  value="com.gray.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
-	<!-- 配置事物的注解方式注入
-	<tx:annotation-driven transaction-manager="transactionManager"/>-->
-	<!--配置事务管理的模板-->
+
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="insert" propagation="REQUIRED" read-only="false"  rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="pointCut" expression="execution (* com.gray.service.*.*(..))"/>
+		<aop:advisor advice-ref="advice" pointcut-ref="pointCut"/>
+	</aop:config>
+	<!-- 声明式事务管理 配置事物的注解方式注入-->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<!--编程式事务管理 配置事务管理的模板-->
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager"></property>
+		<!--定义事务隔离级别,-1表示使用数据库默认级别-->
+		<property name="isolationLevelName" value="ISOLATION_DEFAULT"></property>
+		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>
 	</bean>
 	<!-- 配置事务管理器 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-		<!--定义事务隔离级别,-1表示使用数据库默认级别
-		<property name="readOnly" value="false"></property>
-		<property name="isolationLevelName" value="ISOLATION_DEFAULT"></property>
-		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>-->
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

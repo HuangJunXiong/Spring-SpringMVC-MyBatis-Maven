@@ -10,4 +10,7 @@
     <delete id="deleteSql" parameterType="java.lang.String" >
         ${value}
     </delete>
+    <select id="sum" resultType="java.lang.Integer">
+        SELECT SUM(money) FROM tbl_account;
+    </select>
 </mapper>

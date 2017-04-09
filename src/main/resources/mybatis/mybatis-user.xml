@@ -24,12 +24,6 @@
   	<include refid="Base_Column_List" />
   	from user
   </select>
-    <update id="update" parameterType="java.lang.String">
-        ${value}
-    </update>
-    <insert id="insert" parameterType="java.lang.String" >
-        ${value}
-    </insert>
     <select id="selectEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
         <include refid="Base_Column_List" />
