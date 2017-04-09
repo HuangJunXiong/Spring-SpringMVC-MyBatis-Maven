@@ -208,13 +208,13 @@
     <build>
         <finalName>maven</finalName>
         <plugins>
-            <!--<plugin>
+           <!-- <plugin>
                    <groupId>org.apache.tomcat.maven</groupId>
-                   <artifactId>tomcat6-maven-plugin</artifactId>
-                   <version>2.1</version>
+                   <artifactId>tomcat7-maven-plugin</artifactId>
+                   <version>2.2</version>
                    <configuration>
                    <url>http://localhost:9090/manager</url>
-                   <server>Tomcat6</server>
+                   <server>Tomcat7</server>
                    <port>9090</port>
                    <path>/</path>
                  </configuration>
