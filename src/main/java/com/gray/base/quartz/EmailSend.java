@@ -6,7 +6,7 @@ import java.util.Date;
 public class EmailSend{
 
 	public void execute(){
-		// TODO ·¢ËÍÓÊ¼şµÄÒ»Ğ©²Ù×÷
+		// TODO å‘é€é‚®ä»¶çš„ä¸€äº›æ“ä½œ
 		System.out.println("Timed task execution...Current time is: "+new Date(System.currentTimeMillis()));
 	}
 

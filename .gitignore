@@ -85,3 +85,13 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+.gitignore
+.idea/MybatisDemo.iml
+.idea/dataSources.local.xml
+.idea/dataSources/
+.idea/inspectionProfiles/
+.idea/libraries/Maven__junit_junit_4_12.xml
+.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+.idea/markdown-doclet.xml
+.idea/pegdown-doclet.xml
+.idea/workspace.xml

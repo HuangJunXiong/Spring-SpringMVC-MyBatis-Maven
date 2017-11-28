@@ -27,40 +27,40 @@ import java.io.IOException;
 
 @Controller
 public class UserController {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
-	@Autowired
-	private UserService userService;
-	@Autowired
-	@Qualifier("remindServiceImpl")
-	private RemindService remindService;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    private UserService userService;
+    @Autowired
+    @Qualifier("remindServiceImpl")
+    private RemindService remindService;
 
-	@RequestMapping("/dologin.do") //url
-	@Log(oper="user login")
-	public String dologin(User user, Model model){
-		logger.info("login ....");
-		String info = loginUser(user);
-		if (!"SUCC".equals(info)) {
-			model.addAttribute("failMsg", "User does not exist or password error!");
-			return "/jsp/fail";
-		}else{
-			model.addAttribute("successMsg", "login Succ!");//???????????
-			model.addAttribute("name", user.getUsername());
-			return "/jsp/success";//?????
-		}
-	}
+    @RequestMapping("/dologin.do") //url
+    @Log(oper = "user login")
+    public String dologin(User user, Model model) {
+        logger.info("login ....");
+        String info = loginUser(user);
+        if (!"SUCC".equals(info)) {
+            model.addAttribute("failMsg", "User does not exist or password error!");
+            return "jsp/fail";
+        } else {
+            model.addAttribute("successMsg", "login Succ!");
+            model.addAttribute("name", user.getUsername());
+            return "jsp/success";
+        }
+    }
 
-	@RequestMapping("/logout.do")
-	@Log(oper="user logout")
-	public void logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		Subject subject = SecurityUtils.getSubject();
-		if (subject != null) {
-			try{
-				subject.logout();
-			}catch(Exception ex){
-			}
-		}
-		response.sendRedirect("/index.jsp");
-	}
+    @RequestMapping("/logout.do")
+    @Log(oper = "user logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject != null) {
+            try {
+                subject.logout();
+            } catch (Exception ex) {
+            }
+        }
+        response.sendRedirect("/index.jsp");
+    }
 
 //@RequestMapping(value="/list", method=RequestMethod.GET)
 //@ResponseBody
@@ -73,55 +73,57 @@ public class UserController {
 //	return userService.findByUserName(username);
 //}
 
-	private String loginUser(User user) {
-		if (isRelogin(user)) return "SUCC"; // ?????????????
+    private String loginUser(User user) {
+        if (isRelogin(user)) return "SUCC"; //
 
-		return shiroLogin(user); // ??shiro?????
-	}
-	private String shiroLogin(User user) {
-		// ??token?????????????????????????
-		UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword().toCharArray(), null);
-		token.setRememberMe(true);
+        return shiroLogin(user); //
+    }
 
-		// shiro????
-		try {
-			SecurityUtils.getSubject().login(token);
-		} catch (UnknownAccountException ex) {
-			return "User does not exist or password error!";
-		} catch (IncorrectCredentialsException ex) {
-			return "User does not exist or password error!";
-		} catch (AuthenticationException ex) {
-			ex.printStackTrace();
-			return ex.getMessage(); // ???????
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return "Internal error, please try again!";
-		}
-		return "SUCC";
-	}
+    private String shiroLogin(User user) {
+        //
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword().toCharArray(), null);
+        token.setRememberMe(true);
 
-	private boolean isRelogin(User user) {
-		Subject us = SecurityUtils.getSubject();
-		if (us.isAuthenticated()) {
-			return true; // ??????????????????????
-		}
-		return false; // ??????
-	}
-	@RequestMapping("/register.do")
-	@Log(oper="user register")
-	@ResponseBody
-	public ServiceParam register(User user, Model model){
-		if(!StringUtils.isEmpty(user.getUsername())){
-			user.setRole("user");
-			User userDb = userService.findByUserName(user.getUsername());
-			User userDB = userService.findByEmail(user.getEmail());
-			if (userDb != null)return new ServiceParam("user exist!");
-			if(userDB != null) return new ServiceParam("email exist!");
-			userService.insertUser(user);
-			// ???????????
-			remindService.sendRegisterRemind(user);
-			return new ServiceParam(null,"register Succ!",true);
-		}
-		return new ServiceParam("paramErr!");
-	}
+        // shiro
+        try {
+            SecurityUtils.getSubject().login(token);
+        } catch (UnknownAccountException ex) {
+            return "User does not exist or password error!";
+        } catch (IncorrectCredentialsException ex) {
+            return "User does not exist or password error!";
+        } catch (AuthenticationException ex) {
+            ex.printStackTrace();
+            return ex.getMessage(); // 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "Internal error, please try again!";
+        }
+        return "SUCC";
+    }
+
+    private boolean isRelogin(User user) {
+        Subject us = SecurityUtils.getSubject();
+        if (us.isAuthenticated()) {
+            return true; // 
+        }
+        return false; // 
+    }
+
+    @RequestMapping("/register.do")
+    @Log(oper = "user register")
+    @ResponseBody
+    public ServiceParam register(User user, Model model) {
+        if (!StringUtils.isEmpty(user.getUsername())) {
+            user.setRole("user");
+            User userDb = userService.findByUserName(user.getUsername());
+            User userDB = userService.findByEmail(user.getEmail());
+            if (userDb != null) return new ServiceParam("user exist!");
+            if (userDB != null) return new ServiceParam("email exist!");
+            userService.insertUser(user);
+            // 
+            remindService.sendRegisterRemind(user);
+            return new ServiceParam(null, "register Succ!", true);
+        }
+        return new ServiceParam("paramErr!");
+    }
 }

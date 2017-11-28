@@ -65,29 +65,29 @@ public class ClientTest extends TestCase {
 	//@Test
 	public void sendPost(){
 		try {
-			// ĞèÒªÇëÇóµÄrestfulµØÖ·
+			// éœ€è¦è¯·æ±‚çš„restfulåœ°å€
 			URL url = new URL("http://localhost:9090/profile/ws/emp");
 
-			// ´ò¿ªrestfulÁ´½Ó
+			// æ‰“å¼€restfulé“¾æ¥
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-			// Ìá½»Ä£Ê½
+			// æäº¤æ¨¡å¼
 			conn.setRequestMethod("POST");// POST GET PUT DELETE
 
-			// ÉèÖÃ·ÃÎÊÌá½»Ä£Ê½£¬±íµ¥Ìá½»
+			// è®¾ç½®è®¿é—®æäº¤æ¨¡å¼ï¼Œè¡¨å•æäº¤
 			conn.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 
-			conn.setConnectTimeout(10000);// Á¬½Ó³¬Ê± µ¥Î»ºÁÃë
-			conn.setReadTimeout(2000);// ¶ÁÈ¡³¬Ê± µ¥Î»ºÁÃë
+			conn.setConnectTimeout(10000);// è¿æ¥è¶…æ—¶ å•ä½æ¯«ç§’
+			conn.setReadTimeout(2000);// è¯»å–è¶…æ—¶ å•ä½æ¯«ç§’
 
-			conn.setDoOutput(true);// ÊÇ·ñÊäÈë²ÎÊı
+			conn.setDoOutput(true);// æ˜¯å¦è¾“å…¥å‚æ•°
 
 			StringBuffer params = new StringBuffer();
 	        params.append("id").append("=").append("TY001");
 			byte[] bypes = params.toString().getBytes();
 			conn.getOutputStream().write(bypes);
-			// ¶ÁÈ¡ÇëÇó·µ»ØÖµ
+			// è¯»å–è¯·æ±‚è¿”å›å€¼
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(conn.getInputStream()));
             String line;

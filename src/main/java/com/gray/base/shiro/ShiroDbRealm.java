@@ -22,7 +22,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	public static final String SESSION_USER_KEY = "gray";
 
 	/**
-	 * ÊÚÈ¨²éÑ¯»Øµ÷º¯Êı, ½øĞĞ¼øÈ¨µ«»º´æÖĞÎŞÓÃ»§µÄÊÚÈ¨ĞÅÏ¢Ê±µ÷ÓÃ,¸ºÔğÔÚÓ¦ÓÃ³ÌĞòÖĞ¾ö¶¨ÓÃ»§µÄ·ÃÎÊ¿ØÖÆµÄ·½·¨
+	 * æˆæƒæŸ¥è¯¢å›è°ƒå‡½æ•°, è¿›è¡Œé‰´æƒä½†ç¼“å­˜ä¸­æ— ç”¨æˆ·çš„æˆæƒä¿¡æ¯æ—¶è°ƒç”¨,è´Ÿè´£åœ¨åº”ç”¨ç¨‹åºä¸­å†³å®šç”¨æˆ·çš„è®¿é—®æ§åˆ¶çš„æ–¹æ³•
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
@@ -33,23 +33,23 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	}
 
 	/**
-	 * ÈÏÖ¤»Øµ÷º¯Êı£¬µÇÂ¼ĞÅÏ¢ºÍÓÃ»§ÑéÖ¤ĞÅÏ¢ÑéÖ¤
+	 * è®¤è¯å›è°ƒå‡½æ•°ï¼Œç™»å½•ä¿¡æ¯å’Œç”¨æˆ·éªŒè¯ä¿¡æ¯éªŒè¯
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
-		// °Ñtoken×ª»»³ÉUser¶ÔÏó
+		// æŠŠtokenè½¬æ¢æˆUserå¯¹è±¡
 		User userLogin = tokenToUser((UsernamePasswordToken) authcToken);
-		// ÑéÖ¤ÓÃ»§ÊÇ·ñ¿ÉÒÔµÇÂ¼
+		// éªŒè¯ç”¨æˆ·æ˜¯å¦å¯ä»¥ç™»å½•
 		User ui = userService.doUserLogin(userLogin);
 		if(ui == null)
-			return null; // Òì³£´¦Àí£¬ÕÒ²»µ½Êı¾İ
-		// ÉèÖÃsession
+			return null; // å¼‚å¸¸å¤„ç†ï¼Œæ‰¾ä¸åˆ°æ•°æ®
+		// è®¾ç½®session
 		Session session = SecurityUtils.getSubject().getSession();
 		session.setAttribute(ShiroDbRealm.SESSION_USER_KEY, ui); 
-		//µ±Ç° Realm µÄ name
+		//å½“å‰ Realm çš„ name
 		String realmName = this.getName();
-		//µÇÂ½µÄÖ÷ÒªĞÅÏ¢: ¿ÉÒÔÊÇÒ»¸öÊµÌåÀàµÄ¶ÔÏó, µ«¸ÃÊµÌåÀàµÄ¶ÔÏóÒ»¶¨ÊÇ¸ù¾İ token µÄ username ²éÑ¯µÃµ½µÄ.
+		//ç™»é™†çš„ä¸»è¦ä¿¡æ¯: å¯ä»¥æ˜¯ä¸€ä¸ªå®ä½“ç±»çš„å¯¹è±¡, ä½†è¯¥å®ä½“ç±»çš„å¯¹è±¡ä¸€å®šæ˜¯æ ¹æ® token çš„ username æŸ¥è¯¢å¾—åˆ°çš„.
 //		Object principal = ui.getUsername();
 		Object principal = authcToken.getPrincipal();
 		return new SimpleAuthenticationInfo(principal, userLogin.getPassword(), realmName);
@@ -62,7 +62,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		return user;
 	}
 
-	//Ò»¶¨ÒªĞ´getset·½·¨
+	//ä¸€å®šè¦å†™getsetæ–¹æ³•
 	public UserServiceImpl getUserService() {
 		return userService;
 	}
